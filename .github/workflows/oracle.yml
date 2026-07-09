@@ -1,0 +1,25 @@
+name: Oracle Auto Stack Apply
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  apply-stack:
+    runs-on: ubuntu-latest
+    env:
+      OCI_CLI_USER: ${{ secrets.OCI_USER_OCID }}
+      OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY_OCID }}
+      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_KEY_FILE }}
+      OCI_CLI_REGION: ${{ secrets.OCI_REGION }}
+    steps:
+      - name: Send Apply Request to Oracle Singapore Region
+        uses: oracle-actions/run-oci-cli-command@v1.3.2
+        with:
+          command: >-
+            resource-manager job create-apply-job
+            --stack-id ${{ secrets.OCI_STACK_OCID }}
+            --execution-plan-strategy AUTO_APPROVED
+          silent: false
