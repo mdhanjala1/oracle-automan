@@ -1,8 +1,6 @@
 name: Oracle Auto Stack Apply
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
